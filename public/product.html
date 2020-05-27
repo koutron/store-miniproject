@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="productInfo">
+
+    </div>
+
+    <form method="POST" action="/api/form/" name="form">
+        <label>Quantity</label>
+        <input type="text" name="quantity" id="quantity">
+        <label>Name</label>
+        <input type="text" name="name" id="name">
+        <label>Email</label>
+        <input type="text" name="email" id="email">
+        <input type="text" name="productId" id="productId">
+        <input type="submit">
+    </form>
+
+
+    <script>
+        //console.log(window.location.href);
+        const splitUrl = window.location.href.split("/");
+        const productId = splitUrl[4];
+        $("#productId").val(productId);
+
+        $.ajax({
+            method: "GET",
+            url: "/api/getProduct/" + productId
+        }).then(results => {
+            console.log(results);
+            let name = $("<p>");
+            name.text(results[0].name);
+            let description = $("<p>");
+            description.text(results[0].description);
+            let price = $("<p>");
+            price.text(results[0].price);
+            let inventory = $("<p>");
+            inventory.text(results[0].inventory);
+            $("#productInfo").append(name).append(description).append(price).append(inventory);
+        });
+
+    </script>
+</body>
+
+</html>
